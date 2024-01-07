@@ -59,6 +59,8 @@ export const useApiKeyConfig = () => {
     }
   };
 
+  // TODO(pg): add list api keys and delete api key
+
   const changeOpenAiApiKey = async () => {
     try {
       setChangeOpenAiApiKeyRequestPending(true);

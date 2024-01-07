@@ -13,7 +13,7 @@ class ApiKeys(ApiKeysInterface):
         self.db = supabase_client  # type: ignore
 
     def create_api_key(
-        self, new_key_id, new_api_key, user_id, name, days=30, only_chat=False
+        self, new_key_id, new_api_key, user_id, name="API_KEY", days=30, only_chat=False
     ) -> Optional[ApiKey]:
         response = (
             self.db.table("api_keys")
@@ -55,7 +55,7 @@ class ApiKeys(ApiKeysInterface):
     def get_active_api_key(self, api_key: str):
         response = (
             self.db.table("api_keys")
-            .select("api_key", "creation_time")
+            .select("api_key", "creation_time", "days")
             .filter("api_key", "eq", api_key)
             .filter("is_active", "eq", str(True))
             .execute()

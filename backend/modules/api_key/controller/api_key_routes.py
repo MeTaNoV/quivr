@@ -24,11 +24,18 @@ api_keys_repository = ApiKeys()
     dependencies=[Depends(AuthBearer())],
     tags=["API Key"],
 )
-async def create_api_key(current_user: UserIdentity = Depends(get_current_user)):
+async def create_api_key(
+    current_user: UserIdentity = Depends(get_current_user),
+    # name: str = "API_KEY",
+    # days: int = 30,
+    # only_chat: bool = False,
+):
     """
     Create new API key for the current user.
 
     - `current_user`: The current authenticated user.
+    - `name`: The name of the API key.
+    - `days`: The number of days the API key should be valid.
     - Returns the newly created API key.
 
     This endpoint generates a new API key for the current user. The API key is stored in the database and associated with
@@ -41,7 +48,7 @@ async def create_api_key(current_user: UserIdentity = Depends(get_current_user))
     try:
         # Attempt to insert new API key into database
         response = api_keys_repository.create_api_key(
-            new_key_id, new_api_key, current_user.id, "api_key", 30, False
+            new_key_id, new_api_key, current_user.id, name, days, only_chat
         )
     except Exception as e:
         logger.error(f"Error creating new API key: {e}")

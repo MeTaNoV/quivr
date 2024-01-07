@@ -11,8 +11,10 @@ api_key_service = ApiKeyService()
 
 
 class AuthBearer(HTTPBearer):
-    def __init__(self, auto_error: bool = True):
+    # TODO(pg): add only_chat parameter with default value of False
+    def __init__(self, only_chat: bool = False, auto_error: bool = True):
         super().__init__(auto_error=auto_error)
+        self.only_chat = only_chat
 
     async def __call__(
         self,
@@ -43,9 +45,7 @@ class AuthBearer(HTTPBearer):
             return self.get_test_user()
         elif verify_token(token):
             return decode_access_token(token)
-        elif await api_key_service.verify_api_key(
-            token,
-        ):
+        elif await api_key_service.verify_api_key(token, self.only_chat):
             return await api_key_service.get_user_from_api_key(
                 token,
             )
