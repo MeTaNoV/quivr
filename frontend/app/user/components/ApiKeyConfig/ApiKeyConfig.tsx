@@ -14,7 +14,7 @@ export const ApiKeyConfig = (): JSX.Element => {
     apiKey,
     handleCopyClick,
     handleCreateClick,
-    
+    handleDeleteClick,
   } = useApiKeyConfig();
   const { t } = useTranslation(["config"]);
 
@@ -22,6 +22,7 @@ export const ApiKeyConfig = (): JSX.Element => {
     <>
       <h3 className="font-semibold mb-2">Quivr {t("apiKey")}</h3>
 
+      {/* TODO(pg): update */}
       <div>
         {apiKey === "" ? (
           <Button

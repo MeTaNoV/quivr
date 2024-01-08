@@ -26,6 +26,7 @@ describe("ApiKeyConfig", () => {
     expect(getByTestId("create-new-key")).toBeDefined();
   });
 
+  // TODO(pg): update tests
   it("renders 'Create New Key' button when apiKey is empty", () => {
     const { getByTestId } = render(<ApiKeyConfig />);
 
@@ -36,6 +37,7 @@ describe("ApiKeyConfig", () => {
     expect(handleCreateClickMock).toHaveBeenCalledTimes(1);
     expect(handleCreateClickMock).toHaveBeenCalledWith();
   });
+
   it('renders "Copy" button when apiKey is not empty', () => {
     useApiKeyConfigMock.mockReturnValue({
       apiKey: "123456789",

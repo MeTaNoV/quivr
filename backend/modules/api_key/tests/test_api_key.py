@@ -73,6 +73,7 @@ def test_get_user_from_api_key(client, api_key):
     assert user is not None, "User should not be None"
 
 
+# TODO(pg): update tests
 def test_verify_api_key(client, api_key):
     # Call the function with a test API key
     user = APIKeyService.get_user_id_by_api_key(api_key).data[0]["user_id"]

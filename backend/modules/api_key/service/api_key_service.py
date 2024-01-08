@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from fastapi import HTTPException
 from logger import get_logger
@@ -23,6 +23,7 @@ class ApiKeyService:
     async def verify_api_key(
         self,
         api_key: str,
+        only_chat: bool,
     ) -> bool:
         try:
             # Use UTC time to avoid timezone issues
@@ -30,13 +31,17 @@ class ApiKeyService:
             result = self.repository.get_active_api_key(api_key)
 
             if result.data is not None and len(result.data) > 0:
+                # TODO(pg): take into account only_chat parameter
+
                 api_key_creation_date = datetime.strptime(
                     result.data[0]["creation_time"], "%Y-%m-%dT%H:%M:%S"
                 ).date()
 
-                if (api_key_creation_date.month == current_date.month) and (
-                    api_key_creation_date.year == current_date.year
-                ):
+                api_key_expiration_date = api_key_creation_date + timedelta(
+                    days=result.data[0]["days"]
+                )
+
+                if current_date <= api_key_expiration_date:
                     return True
             return False
         except DateError:

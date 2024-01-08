@@ -74,6 +74,7 @@ const UserPage = (): JSX.Element => {
           </CardBody>
         </Card>
         <Card className="mb-5 shadow-sm hover:shadow-none">
+          {/* TODO(pg): update with table of API keys and ability to delete */}
           <CardHeader>
             <h2 className="font-bold text-xl">
               {t("apiKey", { ns: "config" })}

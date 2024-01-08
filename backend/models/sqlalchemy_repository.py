@@ -65,9 +65,12 @@ class ApiKey(Base):
 
     key_id = Column(String, primary_key=True, default=lambda: str(uuid4()))
     user_id = Column(Integer, ForeignKey("users.user_id"))
+    name = Column(String, default="API_KEY")
+    days = Column(Integer, default=30)
+    only_chat = Column(Boolean, default=False)
     api_key = Column(String, unique=True)
     creation_time = Column(DateTime, default=datetime.utcnow)
-    is_active = Column(Boolean, default=True)
     deleted_time = Column(DateTime, nullable=True)
+    is_active = Column(Boolean, default=True)
 
     user = relationship("User")
