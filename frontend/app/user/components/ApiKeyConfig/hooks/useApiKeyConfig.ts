@@ -2,6 +2,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+import { ApiKeyInfo } from "@/app/user/components/ApiKeyConfig/types";
 import { useAuthApi } from "@/lib/api/auth/useAuthApi";
 import { USER_IDENTITY_DATA_KEY } from "@/lib/api/user/config";
 import { useUserApi } from "@/lib/api/user/useUserApi";
@@ -13,13 +14,13 @@ import { useEventTracking } from "@/services/analytics/june/useEventTracking";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useApiKeyConfig = () => {
-  const [apiKey, setApiKey] = useState("");
   const [openAiApiKey, setOpenAiApiKey] = useState<string | null>();
   const [
     changeOpenAiApiKeyRequestPending,
     setChangeOpenAiApiKeyRequestPending,
   ] = useState(false);
   const { updateUserIdentity, getUserIdentity } = useUserApi();
+  const [apiKeys, setApiKeys] = useState([] as ApiKeyInfo[]);
   const { track } = useEventTracking();
   const { createApiKey } = useAuthApi();
   const { publish } = useToast();
@@ -44,7 +45,7 @@ export const useApiKeyConfig = () => {
       void track("CREATE_API_KEY");
       gaEventTracker?.({ action: "CREATE_API_KEY" });
       const createdApiKey = await createApiKey();
-      setApiKey(createdApiKey);
+      setApiKeys(apiKeys.concat(createdApiKey));
     } catch (error) {
       console.error("Error creating API key: ", error);
     }
@@ -60,6 +61,7 @@ export const useApiKeyConfig = () => {
   };
 
   // TODO(pg): add list api keys and delete api key
+  const 
 
   const changeOpenAiApiKey = async () => {
     try {
